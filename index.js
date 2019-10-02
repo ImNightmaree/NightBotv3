@@ -70,21 +70,13 @@ client.on("guildDelete", guild => {
 
 })
 
-client.on("guildMemberAdd", member => {
-
-	let role = member.guild.roles.find(r => r.name === "Member")
-
-	member.addRole(role).catch(console.error);
-
-})
-
 // Loading the client, including the commands
 client.on("message", async message => {
 
 	if (message.author.bot) return // Don't respond to any messages from a bot.
 	if (message.channel.type === "dm") return message.channel.send("Please issue any commands to me in a server. I don't support DM communications just yet!") // We don't support DM communication.
 
-	if (message.content.toLowerCase().includes("discord.gg")) { // If contains discord.gg and isn't an owner or the bot.
+	if (message.content.toLowerCase().includes("discord.gg") && !message.member.hasPermission("ADMINISTRATOR")) { // If contains discord.gg and doesn't have admin perms.
 		let authorID = message.author.id
 		message.delete()
 		console.log("[index.js] Message removed by " + message.author.toString() + " as it contained the beginning of an invite link.")

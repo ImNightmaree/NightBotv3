@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
-const config = require("../config");
+const Discord = require("discord.js")
+const config = require("../config")
 
 exports.run = (client, message) => {
 
@@ -8,13 +8,13 @@ exports.run = (client, message) => {
 		.setDescription("The current ping seems to be...")
 		.addField("Websocket", client.ping + "ms")
 		.setFooter("Called by " + message.author.tag, message.author.avatarURL)
-		.setTimestamp();
+		.setTimestamp()
 
 
-	message.channel.send(pingEmbed);
+	message.channel.send(pingEmbed)
 
-};
+}
 
 exports.help = {
 	name:"ping"
-};
+}

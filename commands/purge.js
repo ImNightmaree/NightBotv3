@@ -14,17 +14,6 @@ exports.run = async (client, message, args) => {
 
 	}
 
-	if (purgeCount <2 || purgeCount >100) {
-
-		const invalidArgsEmbed = new Discord.RichEmbed()
-			.setColor(config.embedColor)
-			.setDescription("Please provide a number between 2 and 100 for the number of messages to be purged.")
-			.setFooter("Called by " + message.author.tag, message.author.avatarURL)
-			.setTimestamp();
-
-		return message.send(invalidArgsEmbed)
-	}
-
 	message.delete()
 
 	const toBePurged = await message.channel.fetchMessages({limit: purgeCount});
@@ -37,10 +26,10 @@ exports.run = async (client, message, args) => {
 		.setFooter("Called by " + message.author.tag, message.author.avatarURL)
 		.setTimestamp();
 
-	message.channel.send(purgeCompleteEmbed);
+	message.channel.send(purgeCompleteEmbed)
 	logChannel.send("📔 " + message.author.toString() + " has successfully purged " + purgeCount + " messages from " + message.channel.toString())
 
-};
+}
 
 exports.help = {
 	name:"purge"

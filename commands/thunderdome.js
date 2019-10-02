@@ -1,9 +1,11 @@
 const Discord = require("discord.js")
 const config = require("../config")
 
-const challenged = message.mentions.members.first()
+
 
 exports.run = (client, message, args) => {
+
+	const challenged = message.mentions.members.first()
 
 	message.channel.send("Please provide an argument. Struggling? Please refer to my help page! (" + config.prefix + "help" + ")")
 

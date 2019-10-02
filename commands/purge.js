@@ -16,7 +16,7 @@ exports.run = async (client, message, args) => {
 
 	message.delete()
 
-	const toBePurged = await message.channel.fetchMessages({limit: purgeCount});
+	const toBePurged = await message.channel.fetchMessages({limit: purgeCount +1});
 	message.channel.bulkDelete(toBePurged)
 		.catch(error => console.log(error));
 

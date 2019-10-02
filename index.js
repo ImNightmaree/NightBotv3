@@ -86,7 +86,7 @@ client.on("message", async message => {
 	if (!message.content.startsWith(config.prefix)) return // If it doesn't have a prefix by this point, ignore it.
 	if (cooldown.has(message.author.id)) { // If the user has a cooldown, warn them and ignore it.
 		message.delete()
-		client.channels.get("525780486098780171").send(":warning: " + message.author.toString() + " has hit cooldown.")
+		client.channels.get("549937681451188234").send(":warning: " + message.author.toString() + " has hit cooldown.")
 		return message.channel.send("Hey " + message.author.toString() + "! Please wait for 5 seconds before sending a command.")
 
 	}

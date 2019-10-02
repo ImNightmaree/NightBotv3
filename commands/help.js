@@ -1,5 +1,5 @@
-const Discord = require("discord.js");
-const config = require("../config");
+const Discord = require("discord.js")
+const config = require("../config")
 const guildMod = "549215227514847232"
 
 exports.run = async (client, message) => {
@@ -8,7 +8,7 @@ exports.run = async (client, message) => {
 		.setColor(config.embedColor)
 		.setDescription("I've got a lot of commands, so I've sent them to you in DM's. Not received it? Make sure you've got your DM's open or I can't message you.")
 		.setFooter("Called by " + message.author.tag, message.author.avatarURL)
-		.setTimestamp();
+		.setTimestamp()
 
 	message.channel.send(helpSentEmbed)
 
@@ -22,14 +22,14 @@ exports.run = async (client, message) => {
 			"**" + config.prefix + "ping** - See if the bot is responding properly, and what the ping is between the WebSocket and the client.\n\n" +
 			"**" + config.prefix + "restart** - Force the bot to restart. It should usually reboot in about a minute or two.\n\n")
 		.setFooter("Need more help? Ask in the Discord!")
-		.setTimestamp();
+		.setTimestamp()
 
 	const commandEmbed = new Discord.RichEmbed()
 		.setColor(config.embedColor)
 		.setDescription("**" + config.prefix + "uptime** - See how long the bot's been running for.\n\n" +
 						"**" + config.prefix + "ping** - See if the bot is responding properly, and what the ping is between the WebSocket and the client.\n\n")
 		.setFooter("Need more help? Ask in the Discord!")
-		.setTimestamp();
+		.setTimestamp()
 
 	if (message.member.roles.has(guildMod)) {
 		await message.author.send(commandStaffEmbed)
@@ -40,4 +40,4 @@ exports.run = async (client, message) => {
 
 exports.help = {
 	name:"help"
-};
+}

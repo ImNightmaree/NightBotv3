@@ -14,7 +14,7 @@ exports.run = async (client, message, args) => {
 
 	}
 
-	if (!purgeCount || purgeCount < 2 || purgeCount > 100) {
+	if (purgeCount < 2 || purgeCount > 100) {
 
 		const invalidArgsEmbed = new Discord.RichEmbed()
 			.setColor(config.embedColor)

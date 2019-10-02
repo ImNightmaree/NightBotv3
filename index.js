@@ -57,6 +57,7 @@ client.on("ready", async () => {
 		})
 	})
 	console.log("\nThe current prefix is set to " + config.prefix + ". Need to change it? Update in the .env file.")
+	console.log("\nWe are live!")
 
 })
 

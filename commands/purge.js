@@ -25,6 +25,8 @@ exports.run = async (client, message, args) => {
 		return message.send(invalidArgsEmbed)
 	}
 
+	message.delete()
+
 	const toBePurged = await message.channel.fetchMessages({limit: purgeCount});
 	message.channel.bulkDelete(toBePurged)
 		.catch(error => console.log(error));

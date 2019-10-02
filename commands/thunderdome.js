@@ -15,7 +15,7 @@ exports.run = (client, message, args) => {
 		.setFooter("Called by " + message.author.tag, message.author.avatarURL)
 		.setTimestamp()
 
-	if (args[0].contains(message.mentions)) {
+	if (args[0] === "challenge" && args[1].contains(message.mentions)) {
 
 		message.send(thunderdomeChallengeEmbed)
 

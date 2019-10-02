@@ -5,7 +5,7 @@ const challenged = message.mentions.members.first()
 
 exports.run = (client, message, args) => {
 
-	message.send("Please provide an argument. Struggling? Please refer to my help page! (" + config.prefix + "help" + ")")
+	message.channel.send("Please provide an argument. Struggling? Please refer to my help page! (" + config.prefix + "help" + ")")
 
 	const thunderdomeChallengeEmbed = new Discord.RichEmbed()
 		.setTitle("Thunderdome")
@@ -17,7 +17,7 @@ exports.run = (client, message, args) => {
 
 	if (args[0] === "challenge" && args[1].contains(message.mentions)) {
 
-		message.send(thunderdomeChallengeEmbed)
+		message.channel.send(thunderdomeChallengeEmbed)
 
 	}
 

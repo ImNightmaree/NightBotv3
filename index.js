@@ -80,6 +80,7 @@ client.on("message", async message => {
 		let authorID = message.author.id
 		message.delete()
 		console.log("[index.js] Message removed by " + message.author.toString() + " as it contained the beginning of an invite link.")
+		message.channel.send("Naughty, naughty " + message.author.toString() + "! You can't be sharing invite links!")
 		await client.users.get(authorID).send("Sorry, but invite links can't be shared without permission from the owners. Your message has been deleted.")
 	}
 

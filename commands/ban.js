@@ -42,7 +42,7 @@ exports.run = async (client, message, args) => {
 
 	if (!reason){
 
-		reason = "No reason provided."; }
+		reason = "No reason provided. Please ask issuing staff member for details."; }
 
 	await client.users.get(target.id).send("Hi there! I'm DMing you to inform you that " + message.author.username + "#" + message.author.discriminator + " has issued a permanent ban on you for the reason of '" + reason + "' For any questions, please contact them.");
 

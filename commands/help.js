@@ -15,6 +15,7 @@ exports.run = async (client, message) => {
 	const commandStaffEmbed = new Discord.RichEmbed()
 		.setColor(config.embedColor)
 		.setDescription("**" + config.prefix + "ban** @user reason - Permanently ban a user from the server.\n" +
+			"**" + config.prefix + "kick** @user reason - Kick a person from the server.\n" +
 			"**" + config.prefix + "mute** @user - Mute a user from the server. Run the command again to unmute.\n" +
 			"**" + config.prefix + "purge** amount - Purge a certain amount of messages from the channel. *You must ensure your purging more than 2 messages, but less than 100 at a time.*\n" +
 			"**" + config.prefix + "uptime** - See how long the bot's been running for.\n" +

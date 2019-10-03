@@ -33,9 +33,10 @@ exports.run = async (client, message, args) => {
 				const denyFilter = (reaction, user) => reaction.emoji.name === "❎" && user.id !== config.botID && user.id === challenged.id
 				const denyCollector = message.createReactionCollector(denyFilter)
 
-				acceptCollector.on("collect", () => message.channel.send( "The challenger has accepted! Let the battle commence! You can roast once every 30 seconds, and this continues until a judge decides the winning roast. With that said, begin!"))
-				denyCollector.on("collect", () => message.channel.send("The challenger is too chicken and has bailed from the challenge... pussy. Try challenging someone else! Maybe they'll live up to the challenge..."))
-
+				acceptCollector.on("collect", () => message.channel.send( "The challenged has accepted! Let the battle commence! You can roast once every 30 seconds, and this continues until a judge decides the winning roast. With that said, begin!"), { time: 300})
+				acceptCollector.on("end", () => message.channel.send("The challenge request has expired as the challenged person failed to respond within 5 minutes... try again later."))
+				denyCollector.on("collect", () => message.channel.send("The challenged is too chicken and has bailed from the challenge... pussy. Try challenging someone else! Maybe they'll live up to the challenge..."), { time: 300})
+				denyCollector.on("end", () => message.channel.send("The challenge request has expired as the challenged person failed to respond within 5 minutes... try again later."))
 			})
 
 	}

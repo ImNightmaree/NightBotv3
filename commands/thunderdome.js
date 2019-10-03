@@ -7,7 +7,9 @@ exports.run = (client, message, args) => {
 
 	const challenged = message.mentions.members.first()
 
-	message.channel.send("Please provide an argument. Struggling? Please refer to my help page! (" + config.prefix + "help" + ")")
+	if (!args) {
+		message.channel.send("Please provide an argument. Struggling? Please refer to my help page! (" + config.prefix + "help" + ")")
+	}
 
 	const thunderdomeChallengeEmbed = new Discord.RichEmbed()
 		.setTitle("Thunderdome")

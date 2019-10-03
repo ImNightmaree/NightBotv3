@@ -33,8 +33,8 @@ exports.run = async (client, message, args) => {
 				const denyFilter = (reaction, user) => reaction.emoji.name === "❎" && user.id !== config.botID && user.id === challenged.id
 				const denyCollector = message.createReactionCollector(denyFilter)
 
-				acceptCollector.on("collect", () => message.channel.send(challenged.toString + " has accepted the challenge! Let the battle commence! You can roast once every 30 seconds, and this continues until a judge decides the winning roast. With that said, begin!"))
-				denyCollector.on("collect", () => message.channel.send(challenged.toString() + " is too chicken and has bailed from the challenge... pussy. Try challenging someone else! Maybe they'll live up to the challenge..."))
+				acceptCollector.on("collect", () => message.channel.send( "The challenger has accepted! Let the battle commence! You can roast once every 30 seconds, and this continues until a judge decides the winning roast. With that said, begin!"))
+				denyCollector.on("collect", () => message.channel.send("The challenger is too chicken and has bailed from the challenge... pussy. Try challenging someone else! Maybe they'll live up to the challenge..."))
 
 			})
 

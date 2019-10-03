@@ -27,10 +27,13 @@ exports.run = async (client, message, args) => {
 	}
 
 	const acceptFilter = (reaction, user) => reaction.emoji.name === "✅" && user.id !== config.botID
-	const denyFilter = (reaction, user) => reaction.emoji.name === "❎" && user.id !== config.botID
+	const acceptCollector = message.createReactionCollector(acceptFilter)
 
-	acceptFilter.on("collect", () => message.channel.send(challenged.toString + " has accepted the challenge! Let the battle commence! You can roast once every 30 seconds, and this continues until a judge decides the winning roast. With that said, begin!"))
-	denyFilter.on("collect", () => message.channel.send(challenged.toString() + " is too chicken and has bailed from the challenge... pussy. Try challenging someone else! Maybe they'll live up to the challenge..."))
+	const denyFilter = (reaction, user) => reaction.emoji.name === "❎" && user.id !== config.botID
+	const denyCollector = message.createReactionCollector(denyFilter)
+
+	acceptCollector.on("collect", () => message.channel.send(challenged.toString + " has accepted the challenge! Let the battle commence! You can roast once every 30 seconds, and this continues until a judge decides the winning roast. With that said, begin!"))
+	denyCollector.on("collect", () => message.channel.send(challenged.toString() + " is too chicken and has bailed from the challenge... pussy. Try challenging someone else! Maybe they'll live up to the challenge..."))
 }
 
 exports.help = {

@@ -2,7 +2,7 @@ require('dotenv').config({path: __dirname + '/.env'})
 
 const config = require("./config.js")
 const SQLite = require("better-sqlite3")
-const db = new SQLite.Database("../thunderdome.db")
+const db = new SQLite("../thunderdome.db")
 const SQL = require("sql-template-strings")
 const Discord = require("discord.js")
 const fs = require("fs")

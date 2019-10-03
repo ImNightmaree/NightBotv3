@@ -11,6 +11,27 @@ exports.run = async (client, message, args) => {
 		message.channel.send("Please provide an argument. Struggling? Please refer to my help page! (" + config.prefix + "help" + ")")
 	}
 
+	if (args[0] === "rules") {
+
+		const thunderdomeRulesEmbed = new Discord.RichEmbed()
+			.setAuthor(client.user.username, client.user.avatarURL)
+			.setColor(config.embedColor)
+			.setDescription("Welcome to The Thunderdome! The rules here are as follows...")
+			.addField("Rule 1)", "You can only send one roast per 30 seconds.")
+			.addField("Rule 2)", "Don't base your roasts off real life information.")
+			.addField("Rule 3)", "Don't use images. Especially if they're of your opponent.")
+			.addField("Rule 4)", "If someone forfeits, the match is over. No exceptions.")
+			.addField("Rule 5)", "The system is turn-based. Take turns and don't message twice in one go. Wait for your opponent. *If it's taking too long, a Judge can declare a winner.*")
+			.addField("Rule 6)", "Grammar is encouraged but not required. The more creative and spicy your roasts are, the better.")
+			.addField("Rule 7)", "If you lose five times in a row, you'll be given the role of 'The Soiled Fool' for a week. Win once and you get it removed, just consider yourself lucky.")
+			.setFooter("Called by " + message.author.tag, message.author.avatarURL)
+			.setTimestamp()
+
+		await message.author.send(thunderdomeRulesEmbed)
+		message.channel.send("I've sent the rules to you by DM. Haven't got it? Make sure you've got your privacy settings to allow DM's from server members.")
+
+	}
+
 	const thunderdomeChallengeEmbed = new Discord.RichEmbed()
 		.setTitle("Thunderdome")
 		.setAuthor(client.user.username, client.user.avatarURL)

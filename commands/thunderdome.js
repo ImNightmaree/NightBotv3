@@ -27,7 +27,7 @@ exports.run = async (client, message, args) => {
 				await message.react("✅")
 
 				const acceptFilter = (reaction, user) => reaction.emoji.name === "✅" && user.id !== config.botID && user.id === challenged.id
-				const acceptCollector = message.createReactionCollector(acceptFilter, { time: 300})
+				const acceptCollector = message.createReactionCollector(acceptFilter, { time: 300000})
 
 				acceptCollector.on("collect", () => message.channel.send("The challenged has accepted! Let the battle commence! You can roast once every 30 seconds, and this continues until a judge decides the winning roast. With that said, begin!"))
 				acceptCollector.on("end", () => message.channel.send("The challenge request has expired as the challenged person failed to respond within 5 minutes... try again later, maybe then they won't be so much of a pussy."))

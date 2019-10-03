@@ -2,10 +2,12 @@
   "name": "nightbot",
   "version": "1.0.0",
   "dependencies": {
+    "better-sqlite3": "^5.4.3",
     "discord.js": "latest",
     "dotenv": "^6.2.0",
     "enmap": "^4.5.0",
     "mysql": "^2.17.1",
+    "node-gyp": "^5.0.4",
     "sql-template-strings": "^2.2.2",
     "uws": "^99.0.0"
   },

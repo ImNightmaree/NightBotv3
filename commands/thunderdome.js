@@ -1,11 +1,13 @@
 const Discord = require("discord.js")
 const config = require("../config")
-
+const SQLite = require("better-sqlite3")
+const db = new SQLite("../thunderdome.sqlite")
 
 
 exports.run = async (client, message, args) => {
 
 	const challenged = message.mentions.members.first()
+	const judgeRole = "553371407107751950"
 
 	if (!args) {
 		message.channel.send("Please provide an argument. Struggling? Please refer to my help page! (" + config.prefix + "help" + ")")
@@ -53,6 +55,14 @@ exports.run = async (client, message, args) => {
 				acceptCollector.on("collect", () => message.channel.send("The challenged has accepted! Let the battle commence! You can roast once every 30 seconds, and this continues until a judge decides the winning roast. With that said, begin!"))
 				acceptCollector.on("end", () => message.channel.send("The challenge request has expired as the challenged person failed to respond within 5 minutes... try again later, maybe then they won't be so much of a pussy."))
 			})
+
+	}
+
+	if (args[0] === "winner" && message.mentions.first() && !message.author.member.roles.has(judgeRole)) {
+		message.author.send("You can't declare a winner because you aren't a Judge.")
+	}
+
+	if (args[0] === "winner" && message.mentions.members.first() && message.author.member.roles.has(judgeRole)) {
 
 	}
 

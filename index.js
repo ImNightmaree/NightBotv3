@@ -2,7 +2,6 @@ require('dotenv').config({path: __dirname + '/.env'})
 
 const config = require("./config.js")
 const SQLite = require("better-sqlite3")
-const db = new SQLite("../thunderdome.db")
 const SQL = require("sql-template-strings")
 const Discord = require("discord.js")
 const fs = require("fs")
@@ -41,10 +40,7 @@ client.on("ready", async () => {
 	setInterval(function() {
 
 		let status = statusList[Math.floor(Math.random()*statusList.length)]
-
-		client.user.setPresence({ game: { name: status }, status: 'online'})
-
-	}, 15000)
+		client.user.setPresence({ game: { name: status }, status: 'online'})}, 15000)
 
 	let date = new Date()
 
@@ -69,6 +65,9 @@ client.on("guildCreate", guild => {
 })
 
 client.on("guildMemberAdd", member => {
+	console.log("[guildMemberAdd] Received!")
+
+	const db = new SQLite("../thunderdome.db")
 
 	const memberId = member.id
 	const memberName = member.toString()

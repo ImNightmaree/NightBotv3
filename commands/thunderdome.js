@@ -25,7 +25,6 @@ exports.run = async (client, message, args) => {
 			.then(async function (message) {
 
 				await message.react("✅")
-				await message.react("❎")
 
 				const acceptFilter = (reaction, user) => reaction.emoji.name === "✅" && user.id !== config.botID && user.id === challenged.id
 				const acceptCollector = message.createReactionCollector(acceptFilter)

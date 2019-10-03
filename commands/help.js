@@ -20,14 +20,16 @@ exports.run = async (client, message) => {
 			"**" + config.prefix + "purge** amount - Purge a certain amount of messages from the channel. *You must ensure your purging more than 2 messages, but less than 100 at a time.*\n\n" +
 			"**" + config.prefix + "uptime** - See how long the bot's been running for.\n\n" +
 			"**" + config.prefix + "ping** - See if the bot is responding properly, and what the ping is between the WebSocket and the client.\n\n" +
-			"**" + config.prefix + "restart** - Force the bot to restart. It should usually reboot in about a minute or two.\n\n")
+			"**" + config.prefix + "restart** - Force the bot to restart. It should usually reboot in about a minute or two.\n\n" +
+			"**" + config.prefix + "thunderdome** challenge @user/rules/winner @user - Welcome to the thunderdome... the rules command doesn't require a user to be mentioned. You can only perform the winner subcommand if your a judge.")
 		.setFooter("Need more help? Ask in the Discord!")
 		.setTimestamp()
 
 	const commandEmbed = new Discord.RichEmbed()
 		.setColor(config.embedColor)
 		.setDescription("**" + config.prefix + "uptime** - See how long the bot's been running for.\n\n" +
-						"**" + config.prefix + "ping** - See if the bot is responding properly, and what the ping is between the WebSocket and the client.\n\n")
+						"**" + config.prefix + "ping** - See if the bot is responding properly, and what the ping is between the WebSocket and the client.\n\n" +
+						"**" + config.prefix + "thunderdome** challenge @user/rules - Welcome to the thunderdome... the rules command doesn't require a user to be mentioned.")
 		.setFooter("Need more help? Ask in the Discord!")
 		.setTimestamp()
 

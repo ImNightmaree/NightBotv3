@@ -1,6 +1,9 @@
 require('dotenv').config({path: __dirname + '/.env'})
 
 const config = require("./config.js")
+const SQLite = require("better-sqlite3")
+const db = new SQLite.Database("../thunderdome.db")
+const SQL = require("sql-template-strings")
 const Discord = require("discord.js")
 const fs = require("fs")
 const client = new Discord.Client()
@@ -63,6 +66,16 @@ client.on("ready", async () => {
 client.on("guildCreate", guild => {
 	console.log("Guild " + guild.name + " (" + guild.id + " owned by " + guild.ownerID + ") " + " has added to me to their server.")
 
+})
+
+client.on("guildMemberAdd", member => {
+
+	const memberId = member.id
+	const memberName = member.toString()
+
+	console.log("Detected member has joined. Creating their table now.")
+	db.run(SQL `INSERT INTO users (id, username, points) VALUES ${memberId}, ${memberName}, 0`)
+	db.close()
 })
 
 client.on("guildDelete", guild => {

@@ -68,7 +68,7 @@ client.on("guildMemberAdd", member => {
 	console.log("[guildMemberAdd] Received!")
 
 	console.log("Detected member has joined. Creating their table now.")
-	const createRow = db.prepare("INSERT INTO users (id, username, points) VALUES ?, ?, 0")
+	const createRow = db.prepare("INSERT INTO users (id, username, points) VALUES (?), (?), 0")
 	createRow.run(member.id, member.toString())
 })
 

@@ -7,6 +7,11 @@ const Discord = require("discord.js")
 const fs = require("fs")
 const client = new Discord.Client()
 
+process.on("exit", () => db.close())
+process.on("SIGHUP", () => process.exit(128 + 1))
+process.on("SIGINT", () => process.exit(128 + 2))
+process.on("SIGTERM", () => process.exit(128 + 15))
+
 client.commands = new Discord.Collection()
 
 let cooldown = new Set()
@@ -117,7 +122,3 @@ client.on("message", async message => {
 })
 client.login(config.token)
 
-process.on("exit", () => db.close())
-process.on("SIGHUP", () => process.exit(128 + 1))
-process.on("SIGINT", () => process.exit(128 + 2))
-process.on("SIGTERM", () => process.exit(128 + 15))

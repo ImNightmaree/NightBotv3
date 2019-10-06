@@ -7,9 +7,8 @@ const fs = require("fs")
 const client = new Discord.Client()
 
 process.on("exit", () => db.close())
-process.on("SIGHUP", () => process.exit(128 + 1))
-process.on("SIGINT", () => process.exit(128 + 2))
-process.on("SIGTERM", () => process.exit(128 + 15))
+process.on("beforeExit", () => db.close())
+process.on("SIGINT", () => db.close() && console.log("SIGINT received - DB closed and exiting now..."))
 
 client.commands = new Discord.Collection()
 

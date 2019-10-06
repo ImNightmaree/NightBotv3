@@ -95,7 +95,7 @@ exports.run = async (client, message, args) => {
 		const secondPlacePoint = secondResultPoint.points
 
 		const grabThirdUser = db.prepare("SELECT username FROM users ORDER BY points ASC")
-		const grabThirdPoint = db.prepare("SELECT username FROM users ORDER BY points ASC")
+		const grabThirdPoint = db.prepare("SELECT points FROM users ORDER BY points ASC")
 		const thirdResultUser = grabThirdUser.get()
 		const thirdResultPoint = grabThirdPoint.get()
 		const thirdPlaceUser = thirdResultUser.username

@@ -79,6 +79,41 @@ exports.run = async (client, message, args) => {
 		message.react("👍")
 	}
 
+	if (args[0] === "leaderboard") {
+		const grabFirstUser = db.prepare("SELECT username FROM users ORDER BY points DESC")
+		const grabFirstPoint = db.prepare("SELECT points FROM users ORDER BY points DESC")
+		const firstResultUser = grabFirstUser.get()
+		const firstResultPoint = grabFirstPoint.get()
+		const firstPlaceUser = firstResultUser.username
+		const firstPlacePoint = firstResultPoint.points
+
+		const grabSecondUser = db.prepare("SELECT username FROM users ORDER BY points DESC LIMIT 1,1")
+		const grabSecondPoint = db.prepare("SELECT points FROM users ORDER BY points DESC LIMIT 1,1")
+		const secondResultUser = grabSecondUser.get()
+		const secondResultPoint = grabSecondPoint.get()
+		const secondPlaceUser = secondResultUser.username
+		const secondPlacePoint = secondResultPoint.points
+
+		const grabThirdUser = db.prepare("SELECT username FROM users ORDER BY points ASC")
+		const grabThirdPoint = db.prepare("SELECT username FROM users ORDER BY points ASC")
+		const thirdResultUser = grabThirdUser.get()
+		const thirdResultPoint = grabThirdPoint.get()
+		const thirdPlaceUser = thirdResultUser.username
+		const thirdPlacePoint = thirdResultPoint.points
+
+		const thunderdomeLeaderboardEmbed = new Discord.RichEmbed()
+			.setTitle("Top 3")
+			.setAuthor(client.user.username, client.user.avatarURL)
+			.setColor(config.embedColor)
+			.addField("In first place...", firstPlaceUser + "(" + firstPlacePoint + " wins overall)")
+			.addField("In second place...", secondPlaceUser + "(" + secondPlacePoint + " wins overall)")
+			.addField("In third place...", thirdPlaceUser + "(" + thirdPlacePoint + " wins overall)")
+			.setFooter("Called by " + message.author.tag, message.author.avatarURL)
+			.setTimestamp()
+
+		message.channel.send(thunderdomeLeaderboardEmbed)
+	}
+
 }
 
 exports.help = {

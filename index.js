@@ -71,8 +71,10 @@ client.on("guildCreate", guild => {
 client.on("guildMemberAdd", member => {
 
 	console.log("[Thunderdome] A user has joined! Deleting their table (if exists) and creating a new one now!")
-	const createRow = db.prepare("INSERT INTO users (id, username, points) VALUES (?, ?, 0)")
-	createRow.run(member.id, member.toString())
+	const deleteRow = db.prepare("DELETE FROM users WHERE id = ?")
+	deleteRow.run(member.id)
+	const createRow = db.prepare("INSERT INTO users (id, username, points) VALUES (?, ?, ?)")
+	createRow.run(member.id, member.user.username + member.user.tag, 0)
 })
 
 client.on("guildDelete", guild => {

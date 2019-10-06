@@ -107,7 +107,7 @@ exports.run = async (client, message, args) => {
 			.setColor(config.embedColor)
 			.addField("In first place... ", "**" + firstPlaceUser + "**, with **" + firstPlacePoint + " wins** overall")
 			.addField("In second place... ", "**" + secondPlaceUser + "**, with **" + secondPlacePoint + " wins** overall")
-			.addField("In third place... ", "**" + thirdPlaceUser + "**, with **" + thirdPlacePoint + " wins** overall)")
+			.addField("In third place... ", "**" + thirdPlaceUser + "**, with **" + thirdPlacePoint + " wins** overall")
 			.setFooter("Called by " + message.author.tag, message.author.avatarURL)
 			.setTimestamp()
 

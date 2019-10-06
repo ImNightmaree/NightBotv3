@@ -1,6 +1,6 @@
 const Discord = require("discord.js")
 const config = require("../config")
-const SQLite = require("better-sqlite3")
+const db = require("better-sqlite3")("./thunderdome.db")
 
 
 exports.run = async (client, message, args) => {
@@ -61,8 +61,18 @@ exports.run = async (client, message, args) => {
 		message.author.send("You can't declare a winner because you aren't a Judge.")
 	}
 
-	if (args[0] === "winner" && message.mentions.members.first() && message.author.member.roles.has(judgeRole)) {
+	if (args[0] === "winner" && !message.mentions.first() && message.author.member.roles.has(judgeRole)) {
+		message.author.send("You haven't mentioned a user to declare winner.")
+	}
 
+	if (args[0] === "winner" && message.mentions.members.first() && message.author.member.roles.has(judgeRole)) {
+		const grabPoints = db.prepare("SELECT points FROM users WHERE id = ?")
+		const resultGrab = grabPoints.all(message.member.id)
+
+		const updatePoints = db.prepare("UPDATE users SET points = ? WHERE id = ?")
+		updatePoints.run(resultGrab+1, message.mentions.first().id)
+
+		message.react("👍")
 	}
 
 }

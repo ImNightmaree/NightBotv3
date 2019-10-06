@@ -69,9 +69,8 @@ client.on("guildCreate", guild => {
 })
 
 client.on("guildMemberAdd", member => {
-	console.log("[guildMemberAdd] Received!")
 
-	console.log("Detected member has joined. Creating their table now.")
+	console.log("[Thunderdome] A user has joined! Deleting their table (if exists) and creating a new one now!")
 	const createRow = db.prepare("INSERT INTO users (id, username, points) VALUES (?, ?, 0)")
 	createRow.run(member.id, member.toString())
 })

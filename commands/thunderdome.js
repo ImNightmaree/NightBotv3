@@ -67,10 +67,10 @@ exports.run = async (client, message, args) => {
 
 	if (args[0] === "winner" && message.mentions.first() && message.author.member.roles.has(judgeRole)) {
 		const grabPoints = db.prepare("SELECT points FROM users WHERE id = ?")
-		const resultGrab = grabPoints.all(message.mentions.id)
+		const resultGrab = grabPoints.all(message.mentions.first().id)
 
 		const updatePoints = db.prepare("UPDATE users SET points = ? WHERE id = ?")
-		updatePoints.run(resultGrab+1, message.mentions.id)
+		updatePoints.run(resultGrab+1, message.mentions.first().id)
 
 		message.react("👍")
 	}

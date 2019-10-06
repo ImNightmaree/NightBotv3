@@ -67,7 +67,7 @@ exports.run = async (client, message, args) => {
 
 	if (args[0] === "winner" && message.mentions.members.first() && message.member.roles.has(judgeRole)) {
 		const grabPoints = db.prepare("SELECT points FROM users WHERE id = ?")
-		const resultGrab = grabPoints.all(message.mentions.members.first().id)
+		const resultGrab = grabPoints.get(message.mentions.members.first().id)
 		console.log("[Thunderdome] Points: " + resultGrab.toString())
 
 		const updatePoints = db.prepare("UPDATE users SET points = ? WHERE id = ?")

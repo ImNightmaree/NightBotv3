@@ -57,15 +57,15 @@ exports.run = async (client, message, args) => {
 
 	}
 
-	if (args[0] === "winner" && message.mentions.members.first() && !message.author.member.roles.has(judgeRole)) {
+	if (args[0] === "winner" && message.mentions.members.first() && !message.member.roles.has(judgeRole)) {
 		message.author.send("You can't declare a winner because you aren't a Judge.")
 	}
 
-	if (args[0] === "winner" && !message.mentions.members.first() && message.author.member.roles.has(judgeRole)) {
+	if (args[0] === "winner" && !message.mentions.members.first() && message.member.roles.has(judgeRole)) {
 		message.author.send("You haven't mentioned a user to declare winner.")
 	}
 
-	if (args[0] === "winner" && message.mentions.members.first() && message.author.member.roles.has(judgeRole)) {
+	if (args[0] === "winner" && message.mentions.members.first() && message.member.roles.has(judgeRole)) {
 		const grabPoints = db.prepare("SELECT points FROM users WHERE id = ?")
 		const resultGrab = grabPoints.all(message.mentions.members.first().id)
 

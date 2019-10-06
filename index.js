@@ -1,7 +1,6 @@
 require('dotenv').config({path: __dirname + '/.env'})
 
 const config = require("./config.js")
-const db = require("better-sqlite3")("./thunderdome.db")
 const Discord = require("discord.js")
 const fs = require("fs")
 const client = new Discord.Client()
@@ -68,6 +67,8 @@ client.on("guildCreate", guild => {
 })
 
 client.on("guildMemberAdd", member => {
+
+	const db = require("better-sqlite3")("./thunderdome.db")
 
 	console.log("[Thunderdome] A user has joined! Deleting their table (if exists) and creating a new one now!")
 	const deleteRow = db.prepare("DELETE FROM users WHERE id = ?")

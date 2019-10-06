@@ -66,12 +66,15 @@ exports.run = async (client, message, args) => {
 	}
 
 	if (args[0] === "winner" && message.mentions.members.first() && message.member.roles.has(judgeRole)) {
-		const grabPoints = db.prepare("SELECT points FROM users WHERE id = ?")
-		const resultGrab = grabPoints.get(message.mentions.members.first().id)
-		console.log("[Thunderdome] Points: " + resultGrab.toString())
+		const grabPoints = db.prepare('SELECT points FROM users WHERE id = ?')
+		const result = grabPoints.get(message.mentions.members.first().id)
+		console.log("[Thunderdome] Points: " + result.points)
 
 		const updatePoints = db.prepare("UPDATE users SET points = ? WHERE id = ?")
-		updatePoints.run(resultGrab.parseInt+1, message.mentions.members.first().id)
+
+		const parsedResult = parseInt(result.points, 10)
+
+		updatePoints.run(parsedResult+1, message.mentions.members.first().id)
 
 		message.react("👍")
 	}

@@ -1,7 +1,6 @@
 const Discord = require("discord.js")
 const config = require("../config")
 const SQLite = require("better-sqlite3")
-const db = new SQLite("../thunderdome.db")
 
 
 exports.run = async (client, message, args) => {

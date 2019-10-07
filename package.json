@@ -6,6 +6,8 @@
     "discord.js": "latest",
     "dotenv": "^6.2.0",
     "enmap": "^4.5.0",
+    "ffmpeg": "0.0.4",
+    "ffmpeg-static": "^2.6.0",
     "mysql": "^2.17.1",
     "node-gyp": "^5.0.4",
     "node-opus": "^0.3.2",

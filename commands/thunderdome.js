@@ -78,7 +78,6 @@ exports.run = async (client, message, args) => {
 		const parsedResult = parseInt(result.points, 10)
 
 		updatePoints.run(parsedResult+1, message.mentions.members.first().id)
-
 		message.react("👍")
 	}
 

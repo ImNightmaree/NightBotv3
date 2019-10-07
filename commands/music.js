@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
 		const videoInfo = await ytdl.getInfo(args[1])
 		const connection = await message.member.voiceChannel.join()
 		const dispatcher = await connection.playStream(ytdl(args[1], { filter: "audioonly"}))
-		message.channel.send("We're now playing **" + videoInfo.title + "** requested by " + message.author. + " in **" + message.member.voiceChannel.name + "**!")
+		message.channel.send("We're now playing **" + videoInfo.title + "** requested by " + message.author.tag + " in **" + message.member.voiceChannel.name + "**!")
 
 	}
 

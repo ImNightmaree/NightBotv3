@@ -71,13 +71,10 @@ exports.run = async (client, message, args) => {
 			message.author.send("You can't declare yourself a winner.")
 			return
 		}
-		
+
 		const grabPoints = db.prepare('SELECT points FROM users WHERE id = ?')
 		const result = grabPoints.get(message.mentions.members.first().id)
-		console.log("[Thunderdome] Points: " + result.points)
-
 		const updatePoints = db.prepare("UPDATE users SET points = ? WHERE id = ?")
-
 		const parsedResult = parseInt(result.points, 10)
 
 		updatePoints.run(parsedResult+1, message.mentions.members.first().id)

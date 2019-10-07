@@ -1,6 +1,4 @@
 const ytdl = require("ytdl-core")
-const ffmpeg = require("ffmpeg-static")
-console.log("[music.js] ffmpeg installed & located at: " + ffmpeg.path)
 
 exports.run = async (client, message, args) => {
 
@@ -24,8 +22,24 @@ exports.run = async (client, message, args) => {
 		const videoInfo = await ytdl.getInfo(args[1])
 		const connection = await message.member.voiceChannel.join()
 		const dispatcher = await connection.playStream(ytdl(args[1], { filter: "audioonly"}))
-		message.channel.send("We're now playing **" + videoInfo.title + "** requested by " + message.author.toString + " in **" + message.member.voiceChannel.name + "**!")
+		message.channel.send("We're now playing **" + videoInfo.title + "** requested by " + message.author. + " in **" + message.member.voiceChannel.name + "**!")
 
+	}
+
+	if (args[0] === "leave") {
+
+		if (!message.guild.me.voiceChannel) {
+			return message.channel.send("I'm not currently in a voice channel...")
+		}
+		if (message.member.voiceChannelID !== message.guild.me.voiceChannelID) {
+			return message.channel.send("You can't tell me to leave a voice channel that you aren't in...")
+		}
+		if (!message.member.voiceChannel) {
+			return message.channel.send("Please connect to my voice channel before telling me to leave...")
+		}
+
+		message.guild.me.voiceChannel.leave()
+		message.channel.send("I'm out, later losers!")
 	}
 
 

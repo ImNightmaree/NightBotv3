@@ -66,6 +66,12 @@ exports.run = async (client, message, args) => {
 	}
 
 	if (args[0] === "winner" && message.mentions.members.first() && message.member.roles.has(judgeRole)) {
+
+		if (message.mentions.members.first().id === message.author.id) {
+			message.author.send("You can't declare yourself a winner.")
+			return
+		}
+		
 		const grabPoints = db.prepare('SELECT points FROM users WHERE id = ?')
 		const result = grabPoints.get(message.mentions.members.first().id)
 		console.log("[Thunderdome] Points: " + result.points)

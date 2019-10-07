@@ -10,13 +10,13 @@ exports.run = async (client, message, args) => {
 			return message.channel("I'm already in a voice channel - sadly I can't be in two places at once!\n\nPlease either disconnect me from my current channel and try again, or move me.")
 		}
 		if (!args[1] || !args[1].includes("youtube.com" || !args[1].includes("youtu.be"))) { // If there aren't any arguments for the second position, or if it doesn't contain youtube.
-			return message.channel.send("You haven't provided a URL to play!\n\nPlease provide a proper URL and try again.")
+			return message.channel.send("You haven't provided a URL to play!\n\nPlease provide a proper URL and try again.") && console.log("[music.js] Validation failed at custom check")
 		}
 
 		const validationCheck = await ytdl.validateURL(args[1])
 
 		if (!validationCheck) {
-			return message.channel.send("You haven't provided a URL to play!\n\nPlease provide a proper URL and try again.")
+			return message.channel.send("You haven't provided a URL to play!\n\nPlease provide a proper URL and try again.") && console.log("[music.js] Validation failed at YTDL")
 		}
 
 		const videoInfo = await ytdl.getInfo(args[1])

@@ -1,5 +1,6 @@
 const ytdl = require("ytdl-core")
 const ffmpeg = require("ffmpeg-static")
+console.log("[music.js] ffmpeg installed & located at: " + ffmpeg.path)
 
 exports.run = async (client, message, args) => {
 

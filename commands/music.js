@@ -42,7 +42,7 @@ exports.run = async (client, message, args) => {
 			console.log("[music.js] Playing audio: " + data.queue[0].songTitle)
 			data.dispatcher.guildID = data.guildID
 
-			data.dispatcher.once("finish", function(){
+			data.dispatcher.once("end", function(){
 				finish(client, this)
 			})
 		}

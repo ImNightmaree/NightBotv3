@@ -1,7 +1,8 @@
 const ytdl = require("ytdl-core")
-const musicQueue = new Map()
 
 exports.run = async (client, message, args) => {
+
+	const musicQueue = new Map()
 
 	if (args[0] === "play") {
 		if (!message.member.voiceChannel) { // If member isn't in a voice channel.

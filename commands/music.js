@@ -43,7 +43,7 @@ exports.run = async (client, message, args) => {
 			data.dispatcher.guildID = data.guildID
 
 			data.dispatcher.once("end", function(){
-				finish(client, this)
+				finish(client, data)
 			})
 		}
 

@@ -72,7 +72,7 @@ exports.run = async (client, message, args) => {
 			return message.channel.send("Please connect to my voice channel before telling me to leave...")
 		}
 
-		message.guild.me.voiceChannel.leave()
+		await message.guild.me.voiceChannel.leave()
 		message.channel.send("I'm out, later losers!")
 	}
 

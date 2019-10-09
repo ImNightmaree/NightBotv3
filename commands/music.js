@@ -37,8 +37,9 @@ exports.run = async (client, message, args) => {
 		musicQueue.set(message.guild.id, data)
 
 		async function play(client, data) {
-			client.channels.get(message.channel.send("We're now playing " + data.queue[0].songTitle + " requested by " + data.queue[0].requester))
+			client.channels.get(message.channel.send("We're now playing **" + data.queue[0].songTitle + "** requested by **" + data.queue[0].requester + "**!"))
 			data.dispatcher = await data.connection.playStream(ytdl(data.queue[0].url, { filter: "audioonly" }))
+			console.log("[music.js] Playing audio: " + data.queue[0].songTitle)
 			data.dispatcher.guildID = data.guildID
 
 			data.dispatcher.once("finish", function(){
@@ -46,16 +47,19 @@ exports.run = async (client, message, args) => {
 			})
 		}
 
-		function finish(client, dispatcher) {
+		async function finish(client, dispatcher) {
+			console.log("[music.js] We've finished! Time to shift to the next...")
 			const fetched = musicQueue.get(dispatcher.guildID)
+			console.log("We've got a dispatcher in GuildID: " + fetched)
 			fetched.queue.shift()
+			console.log("[music.js] Shifted!")
 			if (fetched.queue.length > 0) { // Is the queue empty?
-				musicQueue.set(dispatcher.guildID, fetched)
-				play(client, fetched)
+				musicQueue.set(dispatcher.guildID, fetched) && console.log("[music.js] Set: " + dispatcher.guildID + " & " + fetched)
+				await play(client, fetched) && console.log("[music.js] Playing...")
 			} else {
 				musicQueue.delete(dispatcher.guildID)
-				const vc = client.guilds.get(dispatcher.guildID).me.voiceChannel
-				if (vc) vc.leave()
+				const vc = message.guild.me.voiceChannel
+				if (vc) await vc.leave()
 			}
 		}
 	}

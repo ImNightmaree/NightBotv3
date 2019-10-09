@@ -27,8 +27,7 @@ exports.run = async (client, message, args) => {
 		data.queue.push({ // Let's add it to the queue.
 			songTitle: videoInfo.title,
 			requester: message.author.tag,
-			url: args[1],
-			announceIn: message.channel.id
+			url: args[1]
 		})
 
 		if (!data.dispatcher) await play(client, data) // If there's no dispatcher, let's make one and play the song.
@@ -38,7 +37,7 @@ exports.run = async (client, message, args) => {
 		musicQueue.set(message.guild.id, data)
 
 		async function play(client, data) {
-			client.channels.get(data.queue[0].announceIn.send("We're now playing " + data.queue[0].songTitle + " requested by " + data.queue[0].requester))
+			client.channels.get(message.channel.send("We're now playing " + data.queue[0].songTitle + " requested by " + data.queue[0].requester))
 			data.dispatcher = await data.connection.play(ytdl(data.queue[0].url, { filter: "audioonly" }))
 			data.dispatcher.guildID = data.guildID
 

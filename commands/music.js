@@ -21,18 +21,20 @@ exports.run = async (client, message, args) => {
 			return message.channel.send("The URL provided isn't valid - is it from YouTube? (we only support YouTube at this time)")
 		}
 
-		const musicQueue = message.client.queue.get(message.guild.id)
-		const songInfo = await ytdl.getInfo(args[1])
+		const serverQueue = message.client.queue.get(message.guild.id);
+		const songInfo = await ytdl.getInfo(args[0]);
 		const song = {
 			id: songInfo.video_id,
 			title: Discord.escapeMarkdown(songInfo.title),
 			url: songInfo.video_url
+		};
+
+		if (serverQueue) {
+			serverQueue.songs.push(song);
+			console.log(serverQueue.songs);
+			return message.channel.send(`**${song.title}** has been added to the queue! Requested by **${message.author.tag}**`);
 		}
-		if (musicQueue) { // Does our queue exist?
-			musicQueue.songs.push(song)
-			console.log("[music.js] Queue: " + musicQueue.songs)
-			return message.channel.send(song.title + " has been added to the queue! Requested by " + message.author.tag)
-		}
+
 		const queueConstruct = {
 			textChannel: message.channel,
 			voiceChannel,
@@ -40,44 +42,42 @@ exports.run = async (client, message, args) => {
 			songs: [],
 			volume: 2,
 			playing: true
-		}
-			message.client.queue.set(message.guild.id, queueConstruct)
-		queueConstruct.songs.push(song)
+		};
+		message.client.queue.set(message.guild.id, queueConstruct);
+		queueConstruct.songs.push(song);
 
 		const play = async song => {
-			const queue = message.client.queue.get(message.guild.id)
+			const queue = message.client.queue.get(message.guild.id);
 			if (!song) {
-				queue.voiceChannel.leave()
-				message.client.queue.delete(message.guild.id)
-				return
+				queue.voiceChannel.leave();
+				message.client.queue.delete(message.guild.id);
+				return;
 			}
-		}
 
-		const dispatcher = queue.connection.playOpusStream(await ytdlDisc(song.url), { passes: 3})
-			.on("end", reason => {
-				if (reason === "Stream is not generating quickly enough.") console.log("[music.js] Song ended with reason: Stream not generating quickly enough.")
-				else console.log("[music.js] Song ended with reason: " + reason)
-				queue.songs.shift()
-				play(queue.songs[0])
-			})
-			.on("error", error => console.log("[music.js] Error encountered: " + error))
-		dispatcher.setVolumeLogarithmic(queue.volume / 5)
-		queue.textChannel.send("Now playing: " + song.title + " requested by **" + message.author.tag + "**")
+			const dispatcher = queue.connection.playOpusStream(await ytdlDisc(song.url), { passes: 3 })
+				.on('end', reason => {
+					if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
+					else console.log(reason);
+					queue.songs.shift();
+					play(queue.songs[0]);
+				})
+				.on('error', error => console.error(error));
+			dispatcher.setVolumeLogarithmic(queue.volume / 5);
+			queue.textChannel.send(`🎶 Start playing: **${song.title}**`);
+		};
 
 		try {
-			const connection = await voiceChannel.join()
-			queueConstruct.connection = connection
-			play(queueConstruct.songs[0])
+			const connection = await voiceChannel.join();
+			queueConstruct.connection = connection;
+			play(queueConstruct.songs[0]);
 		} catch (error) {
-			console.error(`[music.js] Couldn't join voice channel: ${error}`)
-			message.client.queue.delete(message.guild.id)
-			await voiceChannel.leave()
-			return message.channel.send("I wasn't able to join the voice channel because an error occurred.")
+			console.error(`I could not join the voice channel: ${error}`);
+			message.client.queue.delete(message.guild.id);
+			await voiceChannel.leave();
+			return message.channel.send(`I couldn't join the voice channel as an error occurred.`);
 		}
-
 	}
-
-}
+};
 
 exports.help = {
 	name:"music"

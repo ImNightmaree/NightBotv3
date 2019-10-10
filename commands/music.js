@@ -1,4 +1,4 @@
-const { Util } = require("discord,js")
+const Discord = require("discord,js")
 const ytdl = require("ytdl-core")
 const ytdlDisc = require("ytdl-core-discord")
 
@@ -25,7 +25,7 @@ exports.run = async (client, message, args) => {
 		const songInfo = await ytdl.getInfo(args[1])
 		const song = {
 			id: songInfo.video_id,
-			title: Util.escapeMarkdown(songInfo.title),
+			title: Discord.escapeMarkdown(songInfo.title),
 			url: songInfo.video_url
 		}
 		if (musicQueue) { // Does our queue exist?

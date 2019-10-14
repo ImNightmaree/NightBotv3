@@ -35,7 +35,7 @@ exports.run = async (client, message, args, ops) => {
 
 		if (!data.dispatcher) await play(client, ops, data) // No dispatcher? Play!
 		else {
-			message.channel.send("I've added **" + info.title + "** to the queue, requested by **" + message.author.tag + "**")
+			message.channel.send("I've added **" + info.songTitle + "** to the queue, requested by **" + message.author.tag + "**")
 		}
 
 		ops.active.set(message.guild.id, data)

@@ -43,6 +43,7 @@ exports.run = async (client, message, args, ops) => {
 			data.dispatcher.guildID = data.guildID
 
 			data.dispatcher.once("end", function() {
+				console.log("We've finished!")
 				finish(client, ops, data)
 			})
 		}

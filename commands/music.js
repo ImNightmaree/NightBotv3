@@ -1,7 +1,7 @@
 
 const ytdl = require("ytdl-core")
 
-exports.run = async (client, message, args) => {
+exports.run = async (client, message, args, ops) => {
 
 	if (args[0] === "play") {
 		if (!message.member.voiceChannel) { // If member isn't in a voice channel.
@@ -19,13 +19,51 @@ exports.run = async (client, message, args) => {
 		if (!validationCheck) {
 			return message.channel.send("You haven't provided a URL to play!\n\nPlease provide a proper URL and try again. We only support YouTube at this time.")
 		}
+		let info = await ytdl.getInfo(args[1])
+		let data = ops.active.get(message.guild.is) || {}
 
-		const videoInfo = await ytdl.getInfo(args[1])
-		const connection = await message.member.voiceChannel.join()
-		const dispatcher = await connection.playStream(ytdl(args[1], { filter: "audioonly"}))
-		message.channel.send("We're now playing **" + videoInfo.title + "** requested by " + message.author.tag + " in **" + message.member.voiceChannel.name + "**!")
+		if (!data.connection) data.connection = await message.member.voiceChannel.join() // No connection? Let's make one now!
+		if (!data.queue) data.queue = [] // No queue array? Let's make one now!
+		data.guildID = message.guild.id
 
+		data.queue.push({
+			songTitle: info.queue,
+			requester: message.author.tag,
+			url: args[1],
+			announceChannel: message.channel.id
+		})
+
+		if (!data.dispatcher) await play(client, ops, data) // No dispatcher? Play!
+		else {
+			message.channel.send("I've added **" + info.title + "** to the queue, requested by **" + message.author.tag + "**")
+		}
+
+		ops.active.set(message.guild.id, data)
+
+		async function play(client, ops, data) {
+			client.channels.get(data.queue[0].announceChannel).send("We're now playing **" + data.queue[0].songTitle + "**, requested by **" + data.queue[0].requester + "**")
+			data.dispatcher = await data.connection.play(ytdl(data.queue[0].url, { filter: 'audioonly'}))
+			data.dispatcher.guildID = data.guildID
+
+			data.dispatcher.once("end", function() {
+				finish(client, ops, data)
+			})
+		}
+
+		async function finish(client, ops, dispatcher) {
+			let fetched = ops.active.get(dispatcher.guildID)
+			fetched.queue.shift()
+			if (fetched.queue.length > 0) {
+				ops.active.set(dispatcher.guildID, fetched)
+				play(client, ops, fetched)
+			} else {
+				ops.active.delete(dispatcher.guildID)
+				let vc = client.guilds.get(dispatcher.guildID).me.voiceChannel
+				if (vc) await vc.leave()
+			}
+		}
 	}
+
 
 	if (args[0] === "leave") {
 

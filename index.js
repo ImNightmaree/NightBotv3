@@ -5,6 +5,7 @@ const config = require("./config.js")
 const Discord = require("discord.js")
 const fs = require("fs")
 const client = new Discord.Client()
+const active = new Map()
 
 process.on("exit", () => db.close())
 process.on("beforeExit", () => db.close())
@@ -16,6 +17,7 @@ let cooldown = new Set()
 let cooldownSeconds = 5
 let ops = {
 	ownerID: config.ownerID,
+	active: active
 
 }
 

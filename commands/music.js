@@ -1,6 +1,32 @@
 
 const ytdl = require("ytdl-core")
 
+async function play(client, ops, data) {
+	client.channels.get(data.queue[0].announceChannel).send("We're now playing **" + data.queue[0].songTitle + "**, requested by **" + data.queue[0].requester + "**")
+	data.dispatcher = await data.connection.playStream(ytdl(data.queue[0].url, { filter: 'audioonly'}))
+	data.dispatcher.guildID = data.guildID
+
+	data.dispatcher.once("end", function() {
+		console.log("We've finished!")
+		finish(client, ops, data)
+	})
+}
+
+async function finish(client, ops, dispatcher) {
+	let fetched = ops.active.get(dispatcher.guildID)
+	fetched.queue.shift()
+	if (fetched.queue.length > 0) {
+		ops.active.set(dispatcher.guildID, fetched)
+		await play(client, ops, fetched)
+	} else {
+		ops.active.delete(dispatcher.guildID)
+		let vc = client.guilds.get(dispatcher.guildID).me.voiceChannel
+		if (vc) await vc.leave()
+	}
+}
+
+
+
 exports.run = async (client, message, args, ops) => {
 
 	if (args[0] === "play") {
@@ -36,32 +62,7 @@ exports.run = async (client, message, args, ops) => {
 		}
 
 		ops.active.set(message.guild.id, data)
-
-		async function play(client, ops, data) {
-			client.channels.get(data.queue[0].announceChannel).send("We're now playing **" + data.queue[0].songTitle + "**, requested by **" + data.queue[0].requester + "**")
-			data.dispatcher = await data.connection.playStream(ytdl(data.queue[0].url, { filter: 'audioonly'}))
-			data.dispatcher.guildID = data.guildID
-
-			data.dispatcher.once("end", function() {
-				console.log("We've finished!")
-				finish(client, ops, data)
-			})
-		}
-
-		async function finish(client, ops, dispatcher) {
-			let fetched = ops.active.get(dispatcher.guildID)
-			fetched.queue.shift()
-			if (fetched.queue.length > 0) {
-				ops.active.set(dispatcher.guildID, fetched)
-				await play(client, ops, fetched)
-			} else {
-				ops.active.delete(dispatcher.guildID)
-				let vc = client.guilds.get(dispatcher.guildID).me.voiceChannel
-				if (vc) await vc.leave()
-			}
-		}
 	}
-
 
 	if (args[0] === "leave") {
 

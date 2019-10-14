@@ -52,7 +52,7 @@ exports.run = async (client, message, args, ops) => {
 			fetched.queue.shift()
 			if (fetched.queue.length > 0) {
 				ops.active.set(dispatcher.guildID, fetched)
-				play(client, ops, fetched)
+				await play(client, ops, fetched)
 			} else {
 				ops.active.delete(dispatcher.guildID)
 				let vc = client.guilds.get(dispatcher.guildID).me.voiceChannel

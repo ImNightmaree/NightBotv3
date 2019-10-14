@@ -22,7 +22,7 @@ exports.run = async (client, message, args) => {
 		}
 
 		const serverQueue = message.client.queue.get(message.guild.id);
-		const songInfo = await ytdl.getInfo(args[0]);
+		const songInfo = await ytdl.getInfo(args[1]);
 		const song = {
 			id: songInfo.video_id,
 			title: Discord.escapeMarkdown(songInfo.title),

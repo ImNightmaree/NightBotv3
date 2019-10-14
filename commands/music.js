@@ -1,83 +1,52 @@
-const Discord = require("discord.js")
+
 const ytdl = require("ytdl-core")
-const ytdlDisc = require("ytdl-core-discord")
 
 exports.run = async (client, message, args) => {
 
 	if (args[0] === "play") {
-		const { voiceChannel } = message.member
-		if (!voiceChannel) {
-			return message.channel.send("You need to be in a voice channel to play music.")
+		if (!message.member.voiceChannel) { // If member isn't in a voice channel.
+			return message.channel.send("I can't play music in a voice channel that you aren't currently in.\n\nPlease join a voice channel and try again.")
 		}
-		const permissions = voiceChannel.permissionsFor(message.client.user)
-		if (!permissions.has("CONNECT")) {
-			return message.channel.send("I'm not able to connect to this channel as I lack the permission to do so.")
+		if (message.guild.me.voiceChannel) { // If bot is currently in a voice channel.
+			return message.channel("I'm already in a voice channel - sadly I can't be in two places at once!\n\nPlease either disconnect me from my current channel and try again, or move me.")
 		}
-		if (!permissions.has("SPEAK")) {
-			return message.channel.send("I'm not able to speak in this channel as I lack the permission to do so.")
-		}
-		const validated = await ytdl.validateURL(args[1])
-		if (!validated) {
-			return message.channel.send("The URL provided isn't valid - is it from YouTube? (we only support YouTube at this time)")
+		if (!args[1]) { // If there aren't any arguments for the second position.
+			return message.channel.send("You haven't provided a URL to play!\n\nPlease provide a proper URL and try again.")
 		}
 
-		const serverQueue = message.client.queue.get(message.guild.id);
-		const songInfo = await ytdl.getInfo(args[1]);
-		const song = {
-			id: songInfo.video_id,
-			title: Discord.escapeMarkdown(songInfo.title),
-			url: songInfo.video_url
-		};
+		const validationCheck = await ytdl.validateURL(args[1])
 
-		if (serverQueue) {
-			serverQueue.songs.push(song);
-			console.log(serverQueue.songs);
-			return message.channel.send(`**${song.title}** has been added to the queue! Requested by **${message.author.tag}**`);
+		if (!validationCheck) {
+			return message.channel.send("You haven't provided a URL to play!\n\nPlease provide a proper URL and try again. We only support YouTube at this time.")
 		}
 
-		const queueConstruct = {
-			textChannel: message.channel,
-			voiceChannel,
-			connection: null,
-			songs: [],
-			volume: 2,
-			playing: true
-		};
-		message.client.queue.set(message.guild.id, queueConstruct);
-		queueConstruct.songs.push(song);
+		const videoInfo = await ytdl.getInfo(args[1])
+		const connection = await message.member.voiceChannel.join()
+		const dispatcher = await connection.playStream(ytdl(args[1], { filter: "audioonly"}))
+		message.channel.send("We're now playing **" + videoInfo.title + "** requested by " + message.author.tag + " in **" + message.member.voiceChannel.name + "**!")
 
-		const play = async song => {
-			const queue = message.client.queue.get(message.guild.id);
-			if (!song) {
-				queue.voiceChannel.leave();
-				message.client.queue.delete(message.guild.id);
-				return;
-			}
-
-			const dispatcher = queue.connection.playOpusStream(await ytdlDisc(song.url), { passes: 3 })
-				.on('end', reason => {
-					if (reason === 'Stream is not generating quickly enough.') console.log('Song ended.');
-					else console.log(reason);
-					queue.songs.shift();
-					play(queue.songs[0]);
-				})
-				.on('error', error => console.error(error));
-			dispatcher.setVolumeLogarithmic(queue.volume / 5);
-			queue.textChannel.send(`🎶 Start playing: **${song.title}**`);
-		};
-
-		try {
-			const connection = await voiceChannel.join();
-			queueConstruct.connection = connection;
-			play(queueConstruct.songs[0]);
-		} catch (error) {
-			console.error(`I could not join the voice channel: ${error}`);
-			message.client.queue.delete(message.guild.id);
-			await voiceChannel.leave();
-			return message.channel.send(`I couldn't join the voice channel as an error occurred.`);
-		}
 	}
-};
+
+	if (args[0] === "leave") {
+
+		if (!message.guild.me.voiceChannel) {
+			return message.channel.send("I'm not currently in a voice channel...")
+		}
+		if (message.member.voiceChannelID !== message.guild.me.voiceChannelID) {
+			return message.channel.send("You can't tell me to leave a voice channel that you aren't in...")
+		}
+		if (!message.member.voiceChannel) {
+			return message.channel.send("Please connect to my voice channel before telling me to leave...")
+		}
+
+		message.guild.me.voiceChannel.leave()
+		message.channel.send("I'm out, later losers!")
+	}
+
+
+
+
+}
 
 exports.help = {
 	name:"music"

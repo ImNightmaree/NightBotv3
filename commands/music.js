@@ -27,7 +27,7 @@ exports.run = async (client, message, args, ops) => {
 		data.guildID = message.guild.id
 
 		data.queue.push({
-			songTitle: info.queue,
+			songTitle: info.title,
 			requester: message.author.tag,
 			url: args[1],
 			announceChannel: message.channel.id

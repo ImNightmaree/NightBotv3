@@ -7,7 +7,6 @@ async function play(client, ops, data) {
 	data.dispatcher.guildID = data.guildID
 
 	data.dispatcher.once("end", function() {
-		console.log("We've finished!")
 		finish(client, ops, data)
 	})
 }

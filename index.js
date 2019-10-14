@@ -14,7 +14,10 @@ client.commands = new Discord.Collection()
 
 let cooldown = new Set()
 let cooldownSeconds = 5
+let ops = {
+	ownerID: config.ownerID,
 
+}
 
 //Checks to see if there are any command files located at  ./commands/.
 
@@ -116,7 +119,7 @@ client.on("message", async message => {
 	let args = messageArray.slice(1)
 
 	let commandfile = client.commands.get(cmd.slice(config.prefix.length))
-	if (commandfile) commandfile.run(client, message, args)
+	if (commandfile) commandfile.run(client, message, args, ops)
 
 })
 client.login(config.token)

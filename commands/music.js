@@ -42,7 +42,7 @@ exports.run = async (client, message, args, ops) => {
 			return message.channel.send("You haven't provided a URL to play!\n\nPlease provide a proper URL and try again. We only support YouTube at this time.")
 		}
 		let info = await ytdl.getInfo(args[1])
-		let data = ops.active.get(message.guild.is) || {}
+		let data = ops.active.get(message.guild.id) || {}
 
 		if (!data.connection) data.connection = await message.member.voiceChannel.join() // No connection? Let's make one now!
 		if (!data.queue) data.queue = [] // No queue array? Let's make one now!

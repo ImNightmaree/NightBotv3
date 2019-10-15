@@ -48,7 +48,7 @@ client.on("ready", async () => {
 	setInterval(function() {
 
 		let status = statusList[Math.floor(Math.random()*statusList.length)]
-		client.user.setPresence({ game: { name: status }, status: 'online'})}, 15000)
+		client.user.setPresence({ game: { name: status }, status: 'online'})}, 20000)
 
 	let date = new Date()
 

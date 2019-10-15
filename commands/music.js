@@ -142,9 +142,7 @@ exports.run = async (client, message, args, ops) => {
 		let fetched = ops.active.get(message.guild.id)
 		if (!fetched) return message.channel.send ("Nothing is currently playing right now.")
 		if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send("You can't adjust the volume if you aren't in the same channel as me.")
-		if (!isNaN[args[1]]) return message.channel.send("Please provide an number between 0-200")
-		if (args[1] > 200) return message.channel.send("You've hit the max volume allowed - please go lower. We only allow values between 0-200.")
-		if (args[1] <= 0) return message.channel.send("You can't set the volume to be lower than 0.")
+		if (isNaN(args[1] || args[1] > 200 || args[1] < 0)) return message.channel.send("Please provide a number between 0-200.")
 		fetched.dispatcher.setVolume(args[1]/100)
 		message.channel.send(`Successfully set the volume of **${fetched.queue[0].title}** to ${args[1]}`)
 	}

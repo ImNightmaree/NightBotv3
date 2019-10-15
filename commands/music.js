@@ -94,7 +94,7 @@ exports.run = async (client, message, args, ops) => {
 
 		let reply = `Queue:\n`
 		for (var i = 1; i < queue.length; i++) {
-			reply += `${i}) **${queue[i].title}** | Requested By: **${queue[i].requester}\n`
+			reply += `${i}) **${queue[i].title}** | Requested By: **${queue[i].requester}**\n`
 		}
 		message.channel.send(reply)
 	}

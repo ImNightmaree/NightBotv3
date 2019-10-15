@@ -3,7 +3,7 @@ const ytdl = require("ytdl-core")
 
 async function play(client, ops, data) {
 	client.channels.get(data.queue[0].announceChannel).send("We're now playing **" + data.queue[0].title + "**, requested by **" + data.queue[0].requester + "**")
-	data.dispatcher = await data.connection.playStream(ytdl(data.queue[0].url, { filter: 'audioonly'}))
+	data.dispatcher = await data.connection.playStream(ytdl(data.queue[0].url, { filter: 'audioonly', quality: 'highestaudio'}))
 	data.dispatcher.guildID = data.guildID
 
 	data.dispatcher.once("end", function() {
@@ -79,14 +79,22 @@ exports.run = async (client, message, args, ops) => {
 		message.channel.send("I'm out, later losers!")
 	}
 
+	if (args[0] === "np" || "nowplaying") {
+		let fetched = ops.active.get(message.guild.id)
+		if (!fetched) return message.channel.send("Nothing is currently playing right now.")
+
+		let nowPlaying = fetched.queue[0]
+
+		return message.channel.send(`We're currently playing **${nowPlaying.title}**, requested by **${nowPlaying.requester}**.`)
+	}
+
 	if (args[0] === "queue") {
 		let fetched = ops.active.get(message.guild.id)
 
 		if (!fetched) return message.channel.send("We\'re currently not playing any music right now...")
 		let queue = fetched.queue
-		let nowPlaying = queue[0]
 
-		let reply = `We're playing...\n**${nowPlaying.title}** | Requested By: **${nowPlaying.requester}\n\nQueued...\n`
+		let reply = `Queue:\n`
 		for (var i = 1; i < queue.length; i++) {
 			reply += `${i}) **${queue[i].title}** | Requested By: **${queue[i].requester}\n`
 		}

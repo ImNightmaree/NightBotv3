@@ -105,7 +105,7 @@ exports.run = async (client, message, args, ops) => {
 		if (!fetched) return message.channel.send("Nothing is currently playing right now.")
 		if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send("You can't skip a song if you aren't in the same channel as me.")
 		let userCount = message.member.voiceChannel.members.size
-		let votesRequired = Math.ceil(userCount/2)
+		let votesRequired = Math.ceil(userCount / 2)
 
 		if (!fetched.queue[0].voteSkips) fetched.queue[0].voteSkips = []
 		if (fetched.queue[0].voteSkips.includes(message.member.id)) return message.channel.send(`You can't vote to skip the same song twice! (${fetched.queue[0].voteSkips.length}/${votesRequired} required)`)
@@ -129,7 +129,7 @@ exports.run = async (client, message, args, ops) => {
 		message.channel.send(`**${fetched.queue[0].title}** has been paused successfully.`)
 	}
 
-	if (args === "resume") {
+	if (args[0] === "resume") {
 		let fetched = ops.active.get(message.guild.id)
 		if (!fetched) return message.channel.send("Nothing is currently playing right now.")
 		if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send("You can't skip a song if you aren't in the same channel as me.")
@@ -137,9 +137,6 @@ exports.run = async (client, message, args, ops) => {
 		fetched.dispatcher.resume()
 		message.channel.send(`**${fetched.queue[0].title}** has been resumed successfully.`)
 	}
-
-
-
 }
 
 exports.help = {

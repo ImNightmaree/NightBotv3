@@ -79,7 +79,7 @@ exports.run = async (client, message, args, ops) => {
 		message.channel.send("I'm out, later losers!")
 	}
 
-	if (args[0] === "np" || "nowplaying") {
+	if (args[0] === "np") {
 		let fetched = ops.active.get(message.guild.id)
 		if (!fetched) return message.channel.send("Nothing is currently playing right now.")
 		let nowPlaying = fetched.queue[0]

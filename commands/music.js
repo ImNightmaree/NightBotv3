@@ -4,7 +4,7 @@ const guildMod = "549215227514847232"
 
 async function play(client, ops, data) {
 	client.channels.get(data.queue[0].announceChannel).send("We're now playing **" + data.queue[0].title + "**, requested by **" + data.queue[0].requester + "**")
-	data.dispatcher = await data.connection.playOpusStream(ytdl(data.queue[0].url, { passes: 3, filter: 'audioonly', quality: 'highestaudio'}))
+	data.dispatcher = await data.connection.playStream(ytdl(data.queue[0].url, { passes: 3, filter: 'audioonly', quality: 'highestaudio'}))
 	data.dispatcher.guildID = data.guildID
 
 	data.dispatcher.once("end", function() {

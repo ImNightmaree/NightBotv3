@@ -1,5 +1,6 @@
 
 const ytdl = require("ytdl-core")
+const guildMod = "549215227514847232"
 
 async function play(client, ops, data) {
 	client.channels.get(data.queue[0].announceChannel).send("We're now playing **" + data.queue[0].title + "**, requested by **" + data.queue[0].requester + "**")
@@ -89,7 +90,7 @@ exports.run = async (client, message, args, ops) => {
 	if (args[0] === "queue") {
 		let fetched = ops.active.get(message.guild.id)
 
-		if (!fetched) return message.channel.send("We\'re currently not playing any music right now...")
+		if (!fetched) return message.channel.send("Nothing is currently playing right now.")
 		let queue = fetched.queue
 
 		let reply = `Queue:\n`
@@ -97,6 +98,26 @@ exports.run = async (client, message, args, ops) => {
 			reply += `${i}) **${queue[i].title}** | Requested By: **${queue[i].requester}**\n`
 		}
 		message.channel.send(reply)
+	}
+
+	if (args[0] === "skip") {
+		let fetched = ops.active.get(message.guild.id)
+		if (!fetched) return message.channel.send("Nothing is currently playing right now.")
+		if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send("You can't skip a song if you aren't in the same channel as me.")
+		let userCount = message.member.voiceChannel.members.size
+		let votesRequired = Math.ceil(userCount/2)
+
+		if (!fetched.queue[0].voteSkips) fetched.queue[0].voteSkips = []
+		if (fetched.queue[0].voteSkips.includes(message.member.id)) return message.channel.send(`You can't vote to skip the same song twice! (${fetched.queue[0].voteSkips.length}/${votesRequired} required)`)
+
+		fetched.queue[0].voteSkips.push(message.member.id)
+		ops.active.set(message.guild.id, fetched)
+
+		if (fetched.queue[0].voteSkips.length >= votesRequired || message.member.roles.has(guildMod)) {
+			message.channel.send("Skipping song!")
+			return fetched.dispatcher.end("Skip was successful")
+		}
+		message.channel.send(`You've voted to skip! (${fetched.queue[0].voteSkips.length}/${votesRequired} required)`)
 	}
 
 

@@ -4,7 +4,7 @@ const guildMod = "549215227514847232"
 
 async function play(client, ops, data) {
 	client.channels.get(data.queue[0].announceChannel).send("We're now playing **" + data.queue[0].title + "**, requested by **" + data.queue[0].requester + "**")
-	data.dispatcher = await data.connection.playStream(ytdl(data.queue[0].url, { passes: 3, filter: 'audioonly', quality: 'highestaudio'}))
+	data.dispatcher = await data.connection.playOpusStream(ytdl(data.queue[0].url, { passes: 3, filter: 'audioonly', quality: 'highestaudio'}))
 	data.dispatcher.guildID = data.guildID
 
 	data.dispatcher.once("end", function() {
@@ -142,8 +142,8 @@ exports.run = async (client, message, args, ops) => {
 		let fetched = ops.active.get(message.guild.id)
 		if (!fetched) return message.channel.send ("Nothing is currently playing right now.")
 		if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send("You can't adjust the volume if you aren't in the same channel as me.")
-		if (isNaN(args[1] || args[1] > 200 || args[1] < 10)) return message.channel.send("Please use a number between 10-200")
-		fetched.dispatcher.setVolume(args[1])
+		if (isNaN(args[1] || args[1] > 200 || args[1] < 10)) return message.channel.send("Please use a number between 0-200")
+		fetched.dispatcher.setVolume(args[1]/100)
 		message.channel.send(`Successfully set the volume of **${fetched.queue[0].title}** to ${args[1]}`)
 	}
 }

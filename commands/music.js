@@ -79,6 +79,20 @@ exports.run = async (client, message, args, ops) => {
 		message.channel.send("I'm out, later losers!")
 	}
 
+	if (args[0] === "queue") {
+		let fetched = ops.active.get(message.guild.id)
+
+		if (!fetched) return message.channel.send("We\'re currently not playing any music right now...")
+		let queue = fetched.queue
+		let nowPlaying = queue[0]
+
+		let reply = `We're playing...\n**${nowPlaying.songTitle}** | Requested By: **${nowPlaying.requester}\n\nQueued...\n`
+		for (var i = 1; i < queue.length; i++) {
+			reply += `${i}) **${queue[i].songTitle}** | Requested By: **${queue[i].requester}\n`
+		}
+		message.channel.send(reply)
+	}
+
 
 
 

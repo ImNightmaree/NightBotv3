@@ -41,7 +41,7 @@ fs.readdir("./commands/", (err, files) => {
 
 // Initiate the process of loading the client
 
-let statusList = ['beer pong with Night and Jester...', "with Jester's shining forehead...", "with Night's code...", "with your mind..."]
+let statusList = ['beer pong with Night and Jester...', "with Jester's shining forehead...", "with Night's code...", "with your mind...", "with a 1980's jukebox...", "with DiDi's art supplies...", "with Jester's peepee..."]
 
 client.on("ready", async () => {
 

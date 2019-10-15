@@ -2,7 +2,7 @@
 const ytdl = require("ytdl-core")
 
 async function play(client, ops, data) {
-	client.channels.get(data.queue[0].announceChannel).send("We're now playing **" + data.queue[0].songTitle + "**, requested by **" + data.queue[0].requester + "**")
+	client.channels.get(data.queue[0].announceChannel).send("We're now playing **" + data.queue[0].title + "**, requested by **" + data.queue[0].requester + "**")
 	data.dispatcher = await data.connection.playStream(ytdl(data.queue[0].url, { filter: 'audioonly'}))
 	data.dispatcher.guildID = data.guildID
 

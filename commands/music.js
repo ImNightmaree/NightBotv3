@@ -120,6 +120,23 @@ exports.run = async (client, message, args, ops) => {
 		message.channel.send(`You've voted to skip! (${fetched.queue[0].voteSkips.length}/${votesRequired} required)`)
 	}
 
+	if (args[0] === "pause") {
+		let fetched = ops.active.get(message.guild.id)
+		if (!fetched) return message.channel.send("Nothing is currently playing right now.")
+		if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send("You can't skip a song if you aren't in the same channel as me.")
+		if (fetched.dispatcher.paused) return message.channel.send("The music is already paused.")
+		fetched.dispatcher.pause()
+		message.channel.send(`**${fetched.queue[0].title}** has been paused successfully.`)
+	}
+
+	if (args === "resume") {
+		let fetched = ops.active.get(message.guild.id)
+		if (!fetched) return message.channel.send("Nothing is currently playing right now.")
+		if (message.member.voiceChannel !== message.guild.me.voiceChannel) return message.channel.send("You can't skip a song if you aren't in the same channel as me.")
+		if (!fetched.dispatcher.paused) return message.channel.send("The music isn't paused.")
+		fetched.dispatcher.resume()
+		message.channel.send(`**${fetched.queue[0].title}** has been resumed successfully.`)
+	}
 
 
 

@@ -49,7 +49,7 @@ exports.run = async (client, message, args, ops) => {
 		data.guildID = message.guild.id
 
 		data.queue.push({
-			songTitle: info.songTitle,
+			title: info.title,
 			requester: message.author.tag,
 			url: args[1],
 			announceChannel: message.channel.id
@@ -57,7 +57,7 @@ exports.run = async (client, message, args, ops) => {
 
 		if (!data.dispatcher) await play(client, ops, data) // No dispatcher? Play!
 		else {
-			message.channel.send("I've added **" + info.songTitle + "** to the queue, requested by **" + message.author.tag + "**")
+			message.channel.send("I've added **" + info.title + "** to the queue, requested by **" + message.author.tag + "**")
 		}
 
 		ops.active.set(message.guild.id, data)
@@ -86,9 +86,9 @@ exports.run = async (client, message, args, ops) => {
 		let queue = fetched.queue
 		let nowPlaying = queue[0]
 
-		let reply = `We're playing...\n**${nowPlaying.songTitle}** | Requested By: **${nowPlaying.requester}\n\nQueued...\n`
+		let reply = `We're playing...\n**${nowPlaying.title}** | Requested By: **${nowPlaying.requester}\n\nQueued...\n`
 		for (var i = 1; i < queue.length; i++) {
-			reply += `${i}) **${queue[i].songTitle}** | Requested By: **${queue[i].requester}\n`
+			reply += `${i}) **${queue[i].title}** | Requested By: **${queue[i].requester}\n`
 		}
 		message.channel.send(reply)
 	}

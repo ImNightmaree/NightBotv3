@@ -18,7 +18,6 @@ let cooldownSeconds = 5
 let ops = {
 	ownerID: config.ownerID,
 	active: active
-
 }
 
 //Checks to see if there are any command files located at  ./commands/.
@@ -73,12 +72,20 @@ client.on("guildCreate", guild => {
 })
 
 client.on("guildMemberAdd", member => {
-
-	console.log("[Thunderdome] A user has joined! Deleting their table (if exists) and creating a new one now!")
-	const deleteRow = db.prepare("DELETE FROM users WHERE id = ?")
-	deleteRow.run(member.id)
 	const createRow = db.prepare("INSERT INTO users (id, username, points) VALUES (?, ?, ?)")
 	createRow.run(member.id, member.user.tag, 0)
+
+	let welcomeChannel = client.channels.get("630494114982526996")
+	welcomeChannel.send(`Hey ${member.user.username}${member.user.discriminator}, welcome to Jester's Tavern! Take a seat at the bar and enjoy your stay!`)
+})
+
+client.on("guildMemberRemove", member => {
+	console.log("[Thunderdome] A user has left! Deleting their table...")
+	const deleteRow = db.prepare("DELETE FROM users WHERE id = ?")
+	deleteRow.run(member.id)
+
+	let welcomeChannel = client.channels.get("630494114982526996")
+	welcomeChannel.send(`Oh no... ${member.user.username}${member.user.discriminator} left the tavern, what a shame.`)
 })
 
 client.on("guildDelete", guild => {
@@ -99,7 +106,6 @@ client.on("message", async message => {
 		message.channel.send("Naughty, naughty " + message.author.toString() + "! You can't be sharing invite links!")
 		await client.users.get(authorID).send("Sorry, but invite links can't be shared without permission from the owners. Your message has been deleted.")
 	}
-
 	if (!message.content.startsWith(config.prefix)) return // If it doesn't have a prefix by this point, ignore it.
 	if (cooldown.has(message.author.id)) { // If the user has a cooldown, warn them and ignore it.
 		message.delete()

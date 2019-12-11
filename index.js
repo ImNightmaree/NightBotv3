@@ -9,7 +9,7 @@ const active = new Map()
 
 process.on("exit", () => db.close())
 process.on("beforeExit", () => db.close())
-process.on("SIGINT", () => db.close() && console.log("SIGINT received - DB closed and exiting now..."))
+process.on("SIGINT", () => db.close() && console.log("SIGINT received - DB closed and exiting now...") && client.user.setStatus("dnd"))
 
 client.commands = new Discord.Collection()
 

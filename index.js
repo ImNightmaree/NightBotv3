@@ -76,7 +76,7 @@ client.on("guildMemberAdd", member => {
 	createRow.run(member.id, member.user.tag, 0)
 
 	let welcomeChannel = client.channels.get("630494114982526996")
-	welcomeChannel.send(`Hey ${member.user.tag}, welcome to Jester's Tavern! Take a seat at the bar and enjoy your stay!`)
+	welcomeChannel.send(`Hey ${member.user.toString()}, welcome to Jester's Tavern! Take a seat at the bar and enjoy your stay!`)
 })
 
 client.on("guildMemberRemove", member => {
